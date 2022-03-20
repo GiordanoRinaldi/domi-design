@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\Admin\PageController;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\FrontendController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,10 +16,24 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/', [FrontendController::class, 'index']);
+
+Route::get('/lavoro', [FrontendController::class, 'show'])->name('lavoro');
+Route::get('/projects', [FrontendController::class, 'projects'])->name('projects');
+
+// Authentication Routes...
+Route::middleware('guest')->group(function (){
+    Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
+    Route::post('/login', [LoginController::class, 'login']);
+});
+// Logout
+Route::post('logout', [LoginController::class, 'logout'])->name('logout');
+
+// Admin Routes
+Route::middleware('auth')->group(function (){
+    Route::prefix('admin')->name('admin.')->group(function (){
+        Route::get('/home', [PageController::class, 'index'])->name('home');
+
+    });
 });
 
-Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
