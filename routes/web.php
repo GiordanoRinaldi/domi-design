@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\PageController;
+use App\Http\Controllers\Admin\ProjectController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\FrontendController;
 use Illuminate\Support\Facades\Route;
@@ -30,10 +32,10 @@ Route::middleware('guest')->group(function (){
 Route::post('logout', [LoginController::class, 'logout'])->name('logout');
 
 // Admin Routes
-Route::middleware('auth')->group(function (){
-    Route::prefix('admin')->name('admin.')->group(function (){
+Route::middleware('auth')->prefix('admin')->group(function (){
+    Route::name('admin.')->group(function (){
         Route::get('/home', [PageController::class, 'index'])->name('home');
-
     });
+    Route::resource('categories', CategoryController::class)->except('index', 'show');
+    Route::resource('projects', ProjectController::class)->except('index',);
 });
-

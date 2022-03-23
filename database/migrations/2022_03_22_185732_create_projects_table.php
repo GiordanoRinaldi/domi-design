@@ -18,7 +18,6 @@ class CreateProjectsTable extends Migration
             $table->foreignId('category_id')->constrained()->onDelete('cascade');
             $table->string('title');
             $table->text('description');
-            $table->string('name');
             $table->timestamps();
         });
     }
