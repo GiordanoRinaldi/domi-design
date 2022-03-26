@@ -10,7 +10,6 @@ use App\Http\Services\ProjectService;
 use App\Models\Category;
 use App\Models\Project;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\View\View;
 
 class ProjectController extends Controller
 {
@@ -29,13 +28,13 @@ class ProjectController extends Controller
     }
 
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return View
-     */
+
     public function create()
     {
+        if (Category::all()->isEmpty()) {
+            return redirect()->back()->with('warning',
+            'Non puoi creare un progetto senza avere una categoria da collegare.');
+        }
         return view('admin.projects.create',[
             'categories' => Category::all()
         ]);

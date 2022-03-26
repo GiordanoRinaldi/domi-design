@@ -4,10 +4,8 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
-                @include('layouts.messages')
                 <div class="card">
-                    <div class="card-header">{{ __('Dashboard') }}</div>
-
+                    <div class="card-header">{{ __('Aggiunta nuovo progetto') }}</div>
                     <div class="card-body">
                         <form method="POST" action="{{route('projects.store')}}" enctype="multipart/form-data">
                             @csrf
@@ -55,31 +53,35 @@
                             </div>
                             <hr>
                             <h4 class="text-center">Sezione immagini</h4>
-                            @for($i = 0; $i < 2; $i++)
-                                <div class="row mb-3">
-                                    <label for="image" class="col-md-4 col-form-label text-md-end">@if($i == 0)(Immagine di copertina)@else Foto {{$i}} @endif</label>
-                                    <div class="col-md-6">
-                                        <input type="file" name="img[{{$i}}][image]" class="form-control">
-                                        @error('image')
-                                        <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                        @enderror
-                                    </div>
+                            <div class="row mb-3">
+                                <label for="image" class="col-md-4 col-form-label text-md-end">Immagine di copertina</label>
+                                <div class="col-md-6">
+                                    <input type="file" name="img[0][image]" class="form-control filepond">
+                                    @error('image')
+                                    <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                    @enderror
                                 </div>
-                                <div class="row mb-3 mb-5">
-                                    <label for="description-image" class="col-md-4 col-form-label text-md-end">{{ __('Descrizione immagine') }}</label>
-                                    <div class="col-md-6">
-                                        <textarea id="description-image" class="form-control @error('description-image') is-invalid @enderror" name="img[{{$i}}][description]" rows="3" required></textarea>
-                                        @error('description-image')
-                                        <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                        @enderror
-                                    </div>
+                            </div>
+                            <div class="row mb-3 mb-5">
+                                <label for="description-image" class="col-md-4 col-form-label text-md-end">{{ __('Descrizione immagine') }}</label>
+                                <div class="col-md-6">
+                                    <textarea id="description-image" class="form-control @error('description-image') is-invalid @enderror" name="img[0][description]" rows="3" required></textarea>
+                                    @error('description-image')
+                                    <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                    @enderror
                                 </div>
-                            @endfor
-                            <button type="submit" class="btn btn-primary">Aggiungi</button>
+                            </div>
+                            <div id="more-photo"></div>
+                            <div class="text-center">
+                                <button type="button" class="btn btn-success" id="add-field">Aggingi altra foto</button>
+                                <br>
+                                <button type="button" class="btn btn-danger mt-2" id="remove-field" disabled>Rimuovi ultima foto</button>
+                            </div>
+                            <button type="submit" class="btn btn-primary ">Aggiungi</button>
                         </form>
                     </div>
                 </div>
@@ -87,3 +89,52 @@
         </div>
     </div>
 @endsection
+
+@push('scripts')
+    <script>
+        var x = 1;
+        $('#add-field').click(function() {
+            var html =
+                '<div class="new-field'+x+'">' +
+                '<div class="row mb-3">' +
+                '<label for="image" class="col-md-4 col-form-label text-md-end">Immagine '+ x +'</label>' +
+                '<div class="col-md-6">' +
+                '<input type="file" name="img['+ Number(x) +'][image]" class="form-control">' +
+                '@error("image")' +
+                '<span class="invalid-feedback" role="alert">' +
+                '<strong>{{ $message }}</strong>' +
+                '</span>' +
+                '@enderror' +
+                '</div>' +
+                '</div>' +
+                '<div class="row mb-3 mb-5">' +
+                '<label for="description-image" class="col-md-4 col-form-label text-md-end">{{ __('Descrizione immagine') }}</label>' +
+                '<div class="col-md-6">' +
+                '<textarea id="description-image" class="form-control @error("description-image") is-invalid @enderror" name="img['+ Number(x) +'][description]" rows="3" required></textarea>' +
+                '@error("description-image")' +
+                '<span class="invalid-feedback" role="alert">' +
+                '<strong>{{ $message }}</strong>' +
+                '</span>' +
+                '@enderror' +
+                '</div>' +
+                '</div>' +
+                '</div>';
+           $('#more-photo').append(html);
+           x++;
+           document.location.reload();
+           $('#remove-field').removeAttr('disabled');
+        });
+
+        $('#remove-field').click(function(){
+            if(x >= 1){
+                $('.new-field'+(x-1)).remove();
+                if(x > 1){
+                    x--;
+                }
+                if (x === 1){
+                    $('#remove-field').prop('disabled', true);
+                }
+            }
+        });
+    </script>
+@endpush
