@@ -42,6 +42,7 @@ class CategoryController extends Controller
     }
 
     /**
+     * @param Category $category
      * @return View
      */
     public function edit(Category $category): View

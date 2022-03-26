@@ -6,6 +6,16 @@ use App\Models\Project;
 
 class ProjectService
 {
+    protected $photoService;
+
+    /**
+     * @param Photoservice $photoService
+     */
+    public function __construct(Photoservice $photoService)
+    {
+        $this->photoService = $photoService;
+    }
+
     /**
      * @param array $array
      * @return mixed
@@ -33,6 +43,17 @@ class ProjectService
      */
     public function destroy(Project $project): bool
     {
+        foreach ($project->photos as $photo){
+            $this->photoService->destroy($photo);
+        }
         return $project->delete();
+    }
+
+    /**
+     * @return int
+     */
+    public function getLastProject(): int
+    {
+       return Project::latest()->value('id');
     }
 }

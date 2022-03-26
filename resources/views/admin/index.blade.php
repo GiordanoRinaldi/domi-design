@@ -62,7 +62,7 @@
                                 <tr>
                                     <td class="align-middle">{{$project->title}}</td>
                                     <td>{{$project->category->name}}</td>
-                                    <td><a href="{{route('categories.edit', [$project])}}" class="btn btn-warning">Modifica</a></td>
+                                    <td><a href="{{route('projects.edit', [$project])}}" class="btn btn-warning">Modifica</a></td>
                                     <td>
                                         <form method="POST" action="{{route('projects.destroy', [$project])}}">
                                             @csrf

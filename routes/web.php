@@ -37,5 +37,5 @@ Route::middleware('auth')->prefix('admin')->group(function (){
         Route::get('/home', [PageController::class, 'index'])->name('home');
     });
     Route::resource('categories', CategoryController::class)->except('index', 'show');
-    Route::resource('projects', ProjectController::class)->except('index',);
+    Route::resource('projects', ProjectController::class)->except('index');
 });

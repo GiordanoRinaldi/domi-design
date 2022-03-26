@@ -4,23 +4,28 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreProjectRequest;
+use App\Http\Requests\UpdateProjectRequest;
+use App\Http\Services\PhotoService;
 use App\Http\Services\ProjectService;
 use App\Models\Category;
 use App\Models\Project;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class ProjectController extends Controller
 {
     protected $projectService;
+    protected $photoService;
+
 
     /**
      * @param ProjectService $projectService
+     * @param PhotoService $photoService
      */
-    public function __construct(ProjectService $projectService)
+    public function __construct(ProjectService $projectService, PhotoService $photoService)
     {
         $this->projectService = $projectService;
+        $this->photoService = $photoService;
     }
 
 
@@ -45,6 +50,7 @@ class ProjectController extends Controller
     public function store(StoreProjectRequest $request): RedirectResponse
     {
         $this->projectService->create($request->validated());
+        $this->photoService->create($request->img, $this->projectService->getLastProject());
 
         return redirect()->route('admin.home')->with('success',
             'Nuovo post creato!');
@@ -61,28 +67,32 @@ class ProjectController extends Controller
 //        //
 //    }
 //
-//    /**
-//     * Show the form for editing the specified resource.
-//     *
-//     * @param  int  $id
-//     * @return \Illuminate\Http\Response
-//     */
-//    public function edit($id)
-//    {
-//        //
-//    }
-//
-//    /**
-//     * Update the specified resource in storage.
-//     *
-//     * @param  \Illuminate\Http\Request  $request
-//     * @param  int  $id
-//     * @return \Illuminate\Http\Response
-//     */
-//    public function update(Request $request, $id)
-//    {
-//        //
-//    }
+
+    public function edit(Project $project)
+    {
+        return view('admin.projects.edit', [
+            'project' => $project,
+            'categories' => Category::all()
+        ]);
+    }
+
+
+    /**
+     * @param UpdateProjectRequest $request
+     * @param Project $project
+     * @return RedirectResponse
+     */
+    public function update(UpdateProjectRequest $request, Project $project): RedirectResponse
+    {
+        if ($this->projectService->update($project, $request->validated())){
+            $this->photoService->update($request->img, $project->id, $project->photos);
+            return redirect()->route('admin.home')->with('success',
+                'Progetto aggiornato!');
+        }
+
+        return redirect()->route('admin.home')->with('danger',
+            'Qualcosa è andato storto.');
+    }
 
     /**
      * @param Project $project
@@ -90,6 +100,7 @@ class ProjectController extends Controller
      */
     public function destroy(Project $project): RedirectResponse
     {
+
         if ($this->projectService->destroy($project)) {
             return redirect()->route('admin.home')->with('success',
                 'Categoria eliminata!');

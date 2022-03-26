@@ -6,6 +6,16 @@ use App\Models\Category;
 
 class CategoryService
 {
+    protected $projectService;
+
+    /**
+     * @param ProjectService $projectService
+     */
+    public function __construct(ProjectService $projectService)
+    {
+        $this->projectService = $projectService;
+    }
+
     /**
      * @param array $array
      * @return mixed
@@ -33,6 +43,9 @@ class CategoryService
      */
     public function destroy(Category $category): bool
     {
+        foreach ($category->projects as $project){
+            $this->projectService->destroy($project);
+        }
         return $category->delete();
     }
 }
