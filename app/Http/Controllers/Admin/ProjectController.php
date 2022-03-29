@@ -108,4 +108,25 @@ class ProjectController extends Controller
         return redirect()->route('admin.home')->with('danger',
             'Qualcosa è andato storto.');
     }
+
+    /**
+     * @param Project $project
+     * @return RedirectResponse
+     */
+    public function toggle(Project $project): RedirectResponse
+    {
+        $project->update([
+            'in_homepage' => !$project->in_homepage
+        ]);
+
+        if ($project->in_homepage){
+            return redirect()->route('admin.home')->with('success',
+                'Progetto in homepage!'
+            );
+        } else{
+            return redirect()->route('admin.home')->with('success',
+                'Progetto tolto dalla home!'
+            );
+        }
+    }
 }

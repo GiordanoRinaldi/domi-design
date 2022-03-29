@@ -8,10 +8,10 @@
             <div class="row">
                 @foreach($category->projects as $project)
                     <div class="col-12 col-sm-6 col-xxl-4">
-                    <a href="{{route('project', [$project])}}">
+                    <a href="{{route('project', [$project->slug])}}">
                         <img style="width: 100%; height: auto;" class="figure-img" src="{{asset('storage/' . $project->photos[0]->path_img)}}" alt="">
                     </a>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus accusantium doloremque harum magni non nulla quaerat sit. Asperiores assumenda at consectetur delectus deserunt, dicta dolores ducimus, quas ratione ut, voluptatibus!</p>
+                    <p>{{$project->description}}</p>
                 </div>
                 @endforeach
             </div>

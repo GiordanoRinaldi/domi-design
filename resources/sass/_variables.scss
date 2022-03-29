@@ -1,7 +1,21 @@
 // Body
-$body-bg: #f8fafc;
+$body-bg: #ffff;
 
 // Typography
-$font-family-sans-serif: 'Nunito', sans-serif;
-$font-size-base: 0.9rem;
+$font-family-sans-serif: 'Futura-Book';
+$font-size-base: 1.1rem;
 $line-height-base: 1.6;
+
+h1, h2, h3, h4, h5, h6 {
+    font-family:Futura-Heavy;
+}
+
+#dropdownMenu2{
+    &.navbar-toggler{
+        border-color: white;
+        &:focus{
+            box-shadow: unset;
+        }
+    }
+
+}

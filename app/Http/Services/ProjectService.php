@@ -3,6 +3,7 @@
 namespace App\Http\Services;
 
 use App\Models\Project;
+use Illuminate\Support\Str;
 
 class ProjectService
 {
@@ -22,7 +23,12 @@ class ProjectService
      */
     public function create(array $array)
     {
-        return Project::create($array);
+        return Project::create([
+            'category_id' => $array['category_id'],
+            'title' => $array['title'],
+            'slug' => Str::slug($array['title'], '-'),
+            'description' => $array['description']
+        ]);
     }
 
     /**

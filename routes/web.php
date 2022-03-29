@@ -20,8 +20,10 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [FrontendController::class, 'index']);
 
-Route::get('/project/{project}', [FrontendController::class, 'show'])->name('project');
+Route::get('/project/{slug}', [FrontendController::class, 'show'])->name('project');
 Route::get('/projects/', [FrontendController::class, 'projects'])->name('projects');
+
+Route::get('/about-me', [FrontendController::class, 'bio'])->name('bio');
 
 // Authentication Routes...
 Route::middleware('guest')->group(function (){
@@ -38,4 +40,5 @@ Route::middleware('auth')->prefix('admin')->group(function (){
     });
     Route::resource('categories', CategoryController::class)->except('index', 'show');
     Route::resource('projects', ProjectController::class)->except('index');
+    Route::put('projects/{project}/toggle', [ProjectController::class, 'toggle'])->name('projects.toggle');
 });

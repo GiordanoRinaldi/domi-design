@@ -47,6 +47,7 @@
                             <tr>
                                 <th scope="col">Titolo</th>
                                 <th scope="col">Categoria associata</th>
+                                <th scope="col">In Homepage</th>
                                 <th scope="col">Modifica</th>
                                 <th scope="col">Elimina</th>
                             </tr>
@@ -56,6 +57,15 @@
                                 <tr>
                                     <td class="align-middle">{{$project->title}}</td>
                                     <td>{{$project->category->name}}</td>
+                                    <td>
+                                        <form action="{{route('projects.toggle', [$project])}}" method="POST">
+                                            @csrf
+                                            @method('PUT')
+                                            <button class="btn {{$project->in_homepage ? 'btn-secondary' : 'btn-success'}}">
+                                                {{$project->in_homepage ? 'Togli dalla Home' : 'Metti in Home'}}
+                                            </button>
+                                        </form>
+                                    </td>
                                     <td><a href="{{route('projects.edit', [$project])}}" class="btn btn-warning">Modifica</a></td>
                                     <td>
                                         <button type="button" class="btn btn-danger btn-delete"

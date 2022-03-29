@@ -36,13 +36,22 @@ class PhotoService
     {
         foreach ($array_new as $key => $image_new){
             if (isset($image_new['image'])){
-                $cover_path = Storage::put('images', $image_new['image']);
-                Storage::delete($array_old[$key]["path_img"]);
-                $array_old[$key]->update([
-                    'project_id' => $id,
-                    'path_img' => $cover_path,
-                    'description' => $image_new['description']
-                ]);
+                if($key >= count($array_old)){
+                    $cover_path = Storage::put('images', $image_new['image']);
+                    Photo::create([
+                        'project_id' => $id,
+                        'path_img' => $cover_path,
+                        'description' => $image_new['description']
+                    ]);
+                }else{
+                    $cover_path = Storage::put('images', $image_new['image']);
+                    Storage::delete($array_old[$key]["path_img"]);
+                    $array_old[$key]->update([
+                        'project_id' => $id,
+                        'path_img' => $cover_path,
+                        'description' => $image_new['description']
+                    ]);
+                }
             }
         }
         return true;

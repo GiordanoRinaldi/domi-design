@@ -24,7 +24,7 @@ class StoreProjectRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => ['required', 'string', 'max:250'],
+            'title' => ['required', 'string', 'max:250', 'unique:projects'],
             'description' => ['required', 'string'],
             'category_id' => ['required', 'exists:categories,id'],
             'img' => ['required', 'array'],

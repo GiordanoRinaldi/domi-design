@@ -14,17 +14,19 @@ class FrontendController extends Controller
      */
     public function index(): View
     {
-        return view('frontend.index');
+        return view('frontend.index', [
+            'projects' => Project::where('in_homepage', true)->get()
+        ]);
     }
 
 
     /**
      * @return View
      */
-    public function show(Project $project): View
+    public function show($slug): View
     {
         return view('frontend.show', [
-            'project' => $project
+            'project' => Project::where('slug', $slug)->first()
         ]);
     }
 
@@ -36,5 +38,13 @@ class FrontendController extends Controller
         return view('frontend.university-project', [
             'categories' => Category::all()
         ]);
+    }
+
+    /**
+     * @return View
+     */
+    public function bio(): View
+    {
+        return view('frontend.about-me');
     }
 }
