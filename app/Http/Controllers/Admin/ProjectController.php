@@ -102,7 +102,7 @@ class ProjectController extends Controller
 
         if ($this->projectService->destroy($project)) {
             return redirect()->route('admin.home')->with('success',
-                'Categoria eliminata!');
+                'Progetto eliminato.');
         }
 
         return redirect()->route('admin.home')->with('danger',

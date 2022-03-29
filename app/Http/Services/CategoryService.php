@@ -33,7 +33,6 @@ class CategoryService
     public function update(Category $category,array $array):bool
     {
         $category->update($array);
-
         return true;
     }
 

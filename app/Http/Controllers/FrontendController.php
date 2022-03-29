@@ -2,37 +2,39 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Models\Category;
+use App\Models\Project;
+use Illuminate\Contracts\View\View;
 
 class FrontendController extends Controller
 {
+
     /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
+     * @return View
      */
-    public function index()
+    public function index(): View
     {
         return view('frontend.index');
     }
 
+
     /**
-     * Show the single work.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
+     * @return View
      */
-    public function show()
+    public function show(Project $project): View
     {
-        return view('frontend.show');
+        return view('frontend.show', [
+            'project' => $project
+        ]);
     }
 
     /**
-     * Show the all projects.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
+     * @return View
      */
-    public function projects()
+    public function projects(): View
     {
-        return view('frontend.university-project');
+        return view('frontend.university-project', [
+            'categories' => Category::all()
+        ]);
     }
 }

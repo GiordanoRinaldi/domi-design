@@ -20,8 +20,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [FrontendController::class, 'index']);
 
-Route::get('/lavoro', [FrontendController::class, 'show'])->name('lavoro');
-Route::get('/projects', [FrontendController::class, 'projects'])->name('projects');
+Route::get('/project/{project}', [FrontendController::class, 'show'])->name('project');
+Route::get('/projects/', [FrontendController::class, 'projects'])->name('projects');
 
 // Authentication Routes...
 Route::middleware('guest')->group(function (){

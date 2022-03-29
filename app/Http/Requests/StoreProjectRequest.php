@@ -24,12 +24,25 @@ class StoreProjectRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => ['required', 'string'],
+            'title' => ['required', 'string', 'max:250'],
             'description' => ['required', 'string'],
             'category_id' => ['required', 'exists:categories,id'],
             'img' => ['required', 'array'],
-            'img.*.description' => ['required'],
-            'img.*.image' => ['required']
+            'img.*.description' => ['required', 'string'],
+            'img.*.image' => ['required', 'image', 'mimes:jpg,jpeg,webp']
+        ];
+    }
+
+    /**
+     * Get custom attributes for validator errors.
+     *
+     * @return array
+     */
+    public function attributes(): array
+    {
+        return [
+            'img.*.image' => 'image',
+            'img.*.description' => 'description',
         ];
     }
 }

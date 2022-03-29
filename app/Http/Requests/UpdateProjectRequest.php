@@ -28,8 +28,8 @@ class UpdateProjectRequest extends FormRequest
             'description' => ['required', 'string'],
             'category_id' => ['required', 'exists:categories,id'],
             'img' => ['required', 'array'],
-            'img.*.description' => ['required'],
-            'img.*.image' => ['nullable']
+            'img.*.description' => ['required', 'string'],
+            'img.*.image' => ['nullable', 'image', 'mimes:jpg,jpeg,webp']
         ];
     }
 }
